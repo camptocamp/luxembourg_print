@@ -1,0 +1,22 @@
+INSTALL
+
+$ virtualenv --no-site-packages luxembourg
+$ source luxembourg/bin/activate
+$ pip install -r requirements.txt
+
+RUN
+
+$ python server.py
+
+TEST
+
+$ curl -X POST -d @request.json http://localhost:8080/hello/world > output.pdf
+
+
+TODO
+ * (luxembourg) change the 'routing' value sent in create.json: simply
+   copy the 'desc' from the output of getRoute
+ * use requests (http://www.python-requests.org) and get the PDF from
+   the real print server.
+ * merge the two pdfs using PyPDF2 (https://pypi.python.org/pypi/PyPDF2)
+ * parse the 'layout' attribute and set the page size and orientation

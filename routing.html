@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style type="text/css">
+      body {
+        font-size: 12px;
+      }
+      .step {
+        border-bottom: 1px dotted #aaa;
+        padding: 5px;
+        vertical-align: bottom;
+      }
+      .description {
+
+      }
+      .index, .distance, .time {
+        color: #aaa;
+        font-size: 80%;
+      }
+
+      @page {
+        size: {{size|default('A4 portrait')}};
+        font-size: 14px;
+        @top-left {
+          content: "map.geoportal.lu";
+          font-size: 16px;
+          font-weight: bold;
+        }
+        @top-right {
+          /* content: url(http://map.geoportail.lu/gfx/bandeau.jpg); */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% for step in steps %}
+    <div class="step">
+      <span class="index">{{loop.index}}</span>
+      <!-- <img src="http://map.geoportail.lu/gfx/arrows/{{step.direction}}.png"> -->
+      <span class="description">{{step.description}}</span>
+      <span style="float: right">
+        <span class="time">{{step.time|format_duration}}</span>
+        <span class="distance">{{step.distance|format_distance}}</span>
+      </span>
+    </div>
+    {% endfor %}
+  </body>
+</html>
