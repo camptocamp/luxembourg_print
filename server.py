@@ -13,12 +13,11 @@ def layout(raw):
 
 def hello_world(request):
     body = request.json_body
-    steps = body.get('routing')
-    if steps is not None:
-        output = pdf(steps, size=layout(body.get('layout')))
-        return Response(output, content_type='application/pdf')
-    else:
-        return Response('fail')
+    if body.get('outputFormat') == 'pdf':
+        steps = body.get('routing')
+        if steps is not None:
+            output = pdf(steps, size=layout(body.get('layout')))
+            return Response(output, content_type='application/pdf')
 
 if __name__ == '__main__':
     config = Configurator()
