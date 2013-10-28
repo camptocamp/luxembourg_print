@@ -1,14 +1,21 @@
+import re
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.response import Response
 
 from routing import pdf
 
+
+def layout(raw):
+    match = re.match(r'\w_(\w{2})_(\w*)', raw)
+    if match:
+        return ' '.join(match.groups())
+
 def hello_world(request):
-    steps = request.json_body.get('desc')
+    body = request.json_body
+    steps = body.get('routing')
     if steps is not None:
-        # FIXME: parse 'layout' and set size
-        output = pdf(steps, size='A4 portrait')
+        output = pdf(steps, size=layout(body.get('layout')))
         return Response(output, content_type='application/pdf')
     else:
         return Response('fail')
