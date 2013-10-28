@@ -1,3 +1,4 @@
+from cStringIO import StringIO
 import weasyprint
 
 from jinja2 import Environment, FileSystemLoader
@@ -19,7 +20,9 @@ environment.filters['format_distance'] = format_distance
 template = environment.get_template('routing.html')
 
 
-def pdf(steps, **kwargs):
+def create_pdf(steps, **kwargs):
     html = template.render(steps=steps, **kwargs)
-    return weasyprint.HTML(string=html).write_pdf()
+    output = StringIO()
+    weasyprint.HTML(string=html).write_pdf(output)
+    return output
 

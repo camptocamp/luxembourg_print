@@ -1,9 +1,14 @@
 import re
+from cStringIO import StringIO
+
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.response import Response
 
-from routing import pdf
+from PyPDF2 import PdfFileMerger
+
+from routing import create_pdf
+from proxy import get_pdf
 
 
 def layout(raw):
@@ -13,11 +18,20 @@ def layout(raw):
 
 def hello_world(request):
     body = request.json_body
+    merger = PdfFileMerger()
     if body.get('outputFormat') == 'pdf':
+        # append the pdf from MapFish print
+        merger.append(get_pdf(request))
+
+        # append the routing direction
         steps = body.get('routing')
         if steps is not None:
-            output = pdf(steps, size=layout(body.get('layout')))
-            return Response(output, content_type='application/pdf')
+            merger.append(create_pdf(steps, size=layout(body.get('layout'))))
+
+        output = StringIO()
+        merger.write(output)
+        output.seek(0)
+        return Response(body_file=output, content_type='application/pdf')
 
 if __name__ == '__main__':
     config = Configurator()

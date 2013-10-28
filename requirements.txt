@@ -2,3 +2,4 @@ WeasyPrint
 Jinja2
 pyramid
 requests
+PyPDF2
