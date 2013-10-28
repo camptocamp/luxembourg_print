@@ -12,7 +12,7 @@ $ python server.py
 
 TEST
 
-$ curl -X POST -d @request.json http://localhost:8080/hello/world > output.pdf
+$ curl -e "http://map.geoportail.lu" -X POST -d @request.json http://localhost:8080/hello/world > output.pdf
 
 
 TODO
